@@ -38,6 +38,17 @@ module.exports = function (source) {
 					loaded[fileName] = true;
 					data.imports[index] = readProto(fs.readFileSync(fileName).toString('utf8'));
 					return;
+				} else {
+					fileName = path.resolve(self.context + '/../' + imp);
+					if (fs.existsSync(fileName)) {
+						if (loaded[fileName]) {
+							data.imports[index] = {};
+							return;
+						}
+						loaded[fileName] = true;
+						data.imports[index] = readProto(fs.readFileSync(fileName).toString('utf8'));
+						return;
+					}
 				}
 				throw Error('File not found: ' + imp);
 			});
